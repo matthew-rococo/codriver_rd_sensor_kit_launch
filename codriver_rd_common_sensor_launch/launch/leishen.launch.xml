@@ -1,0 +1,26 @@
+<launch>
+  <!-- Params  有些参数不使用缺省值，这样，如果没有给定，就会出错，便于调试和发现错误-->
+  <arg name="model"/>
+  <arg name="sensor_frame" default="lslidar"/>
+  <arg name="sensor_ip" />
+  <arg name="topic_name" />
+  <arg name="vehicle_mirror_param_file"/>
+  <arg name="container_name" default="leishen_node_container"/>
+
+  <include file="$(find-pkg-share common_sensor_launch)/launch/nebula_node_container.launch.py">
+    <arg name="sensor_model" value="$(var model)"/>
+    <arg name="frame_id" value="$(var sensor_frame)"/>
+    <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
+    <arg name="use_intra_process" value="true"/>
+    <arg name="use_multithread" value="false"/>
+    <arg name="container_name" value="$(var container_name)"/>
+  </include>
+
+  <!-- leishen driver -->
+  <include file="$(find-pkg-share common_sensor_launch)/launch/lslidar_driver_autoware_launch.py" >
+    <arg name="sensor_model" value="$(var model)"/>
+    <arg name="frame_id" value="$(var sensor_frame)"/>
+    <arg name="sensor_ip" value="$(var sensor_ip)"/>
+    <arg name="topic_name" value="$(var topic_name)"/>
+  </include>
+</launch>

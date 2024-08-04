@@ -1,26 +1,16 @@
 <launch>
   <arg name="launch_driver" default="true"/>
-  <arg name="camera_type" default="left"/>
+  <!--    common parameters -->
 
+  <!--用传感器的功能来作为命名空间，因为可能有多个传感器来事先同样的功能-->
+  <arg name="camera_ns" default="traffic_light_camera" description="name space of this camera" />
+  <!--传感器名字，作为输出的话题的名字的前缀-->
+  <arg name="camera_name" default="usb_cam_video10" description="camera name, using as image raw topic name"/>
   <group>
-    <push-ros-namespace namespace="camera"/>
-    <group>
-      <push-ros-namespace namespace="traffic_light"/>
-
-      <!-- (usb_cam_node is assumed to have launched on logging PC) -->
-      <node pkg="topic_tools" exec="relay" name="tl_camera_info_relay" output="log">
-        <param name="input_topic" value="$(var camera_type)/camera_info"/>
-        <param name="output_topic" value="camera_info"/>
-        <param name="type" value="sensor_msgs/msg/CameraInfo"/>
-        <param name="reliability" value="best_effort"/>
-      </node>
-
-      <node pkg="topic_tools" exec="relay" name="tl_compressed_image_relay" output="log">
-        <param name="input_topic" value="$(var camera_type)/image_raw/compressed"/>
-        <param name="output_topic" value="image_raw/compressed"/>
-        <param name="type" value="sensor_msgs/msg/CompressedImage"/>
-        <param name="reliability" value="best_effort"/>
-      </node>
-    </group>
+    <push-ros-namespace namespace="$(var camera_ns)"/>
+    <include file="$(find-pkg-share codriver_rd_common_sensor_launch)/launch/camera_node_container.launch.py">
+      <arg name="camera_ns" value="$(var camera_ns)"/>    
+      <arg name="camera_name" value="$(var camera_name)"/>
+    </include>
   </group>
 </launch>

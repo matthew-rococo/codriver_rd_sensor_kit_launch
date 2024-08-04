@@ -9,7 +9,7 @@ sensor_kit_base_link:
     pitch: 0.0
     yaw: 0.0
 
-  front_traffic_light_camera/camera_link:
+  traffic_light_camera/camera_link:
     x: 1.10946
     y: -0.05
     z: 0.964
@@ -17,7 +17,7 @@ sensor_kit_base_link:
     pitch: 1.4835
     yaw: 0.0
 
-  front_remote_drive_camera/camera_link:
+  remote_drive_camera/camera_link:
     x: 1.10946
     y: 0.0
     z: 0.964

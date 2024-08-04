@@ -34,6 +34,8 @@ def get_lidar_make(sensor_name):
         return "Hesai", ".csv"
     elif sensor_name[:3].lower() in ["hdl", "vlp", "vls"]:
         return "Velodyne", ".yaml"
+    elif sensor_name[:3].lower() in ["lslidar"]:
+        return "lslidar", ".yaml"
     return "unrecognized_sensor_model"
 
 
@@ -98,39 +100,6 @@ def launch_setup(context, *args, **kwargs):
             package="glog_component",
             plugin="GlogComponent",
             name="glog_component",
-        )
-    )
-
-    nodes.append(
-        ComposableNode(
-            package="nebula_ros",
-            plugin=sensor_make + "DriverRosWrapper",
-            name=sensor_make.lower() + "_driver_ros_wrapper_node",
-            parameters=[
-                {
-                    "calibration_file": sensor_calib_fp,
-                    "sensor_model": sensor_model,
-                    **create_parameter_dict(
-                        "host_ip",
-                        "sensor_ip",
-                        "data_port",
-                        "return_mode",
-                        "min_range",
-                        "max_range",
-                        "frame_id",
-                        "scan_phase",
-                        "cloud_min_angle",
-                        "cloud_max_angle",
-                        "dual_return_distance_threshold",
-                    ),
-                },
-            ],
-            remappings=[
-                # cSpell:ignore knzo25
-                # TODO(knzo25): fix the remapping once nebula gets updated
-                ("velodyne_points", "pointcloud_raw_ex"),
-            ],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
     )
 
@@ -228,41 +197,7 @@ def launch_setup(context, *args, **kwargs):
         output="both",
     )
 
-    driver_component = ComposableNode(
-        package="nebula_ros",
-        plugin=sensor_make + "HwInterfaceRosWrapper",
-        # node is created in a global context, need to avoid name clash
-        name=sensor_make.lower() + "_hw_interface_ros_wrapper_node",
-        parameters=[
-            {
-                "sensor_model": sensor_model,
-                "calibration_file": sensor_calib_fp,
-                **create_parameter_dict(
-                    "sensor_ip",
-                    "host_ip",
-                    "scan_phase",
-                    "return_mode",
-                    "frame_id",
-                    "rotation_speed",
-                    "data_port",
-                    "gnss_port",
-                    "cloud_min_angle",
-                    "cloud_max_angle",
-                    "packet_mtu_size",
-                    "dual_return_distance_threshold",
-                    "setup_sensor",
-                ),
-            }
-        ],
-    )
-
-    driver_component_loader = LoadComposableNodes(
-        composable_node_descriptions=[driver_component],
-        target_container=container,
-        condition=IfCondition(LaunchConfiguration("launch_driver")),
-    )
-
-    return [container, driver_component_loader]
+    return [container]
 
 
 def generate_launch_description():
@@ -277,22 +212,7 @@ def generate_launch_description():
     common_sensor_share_dir = get_package_share_directory("common_sensor_launch")
 
     add_launch_arg("sensor_model", description="sensor model name")
-    add_launch_arg("config_file", "", description="sensor configuration file")
-    add_launch_arg("launch_driver", "True", "do launch driver")
-    add_launch_arg("setup_sensor", "True", "configure sensor")
-    add_launch_arg("sensor_ip", "192.168.1.201", "device ip address")
-    add_launch_arg("host_ip", "255.255.255.255", "host ip address")
-    add_launch_arg("scan_phase", "0.0")
     add_launch_arg("base_frame", "base_link", "base frame id")
-    add_launch_arg("min_range", "0.3", "minimum view range for Velodyne sensors")
-    add_launch_arg("max_range", "300.0", "maximum view range for Velodyne sensors")
-    add_launch_arg("cloud_min_angle", "0", "minimum view angle setting on device")
-    add_launch_arg("cloud_max_angle", "360", "maximum view angle setting on device")
-    add_launch_arg("data_port", "2368", "device data port number")
-    add_launch_arg("gnss_port", "2380", "device gnss port number")
-    add_launch_arg("packet_mtu_size", "1500", "packet mtu size")
-    add_launch_arg("rotation_speed", "600", "rotational frequency")
-    add_launch_arg("dual_return_distance_threshold", "0.1", "dual return distance threshold")
     add_launch_arg("frame_id", "lidar", "frame id")
     add_launch_arg("input_frame", LaunchConfiguration("base_frame"), "use for cropbox")
     add_launch_arg("output_frame", LaunchConfiguration("base_frame"), "use for cropbox")
