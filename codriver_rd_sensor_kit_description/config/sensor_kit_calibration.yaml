@@ -1,59 +1,49 @@
 sensor_kit_base_link:
-  # GNSS/INS, 导远的产品使用前右下，而不是前左上车身坐标系,绕X轴旋转180°即重合
-  # 同时，标定后的定位中心即是车辆后轴中心，
-  gnss_ins_link: 
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    roll: 180.0
-    pitch: 0.0
-    yaw: 0.0
+  gnss_ins_link:
+    x: 0.000000
+    y: 0.000000
+    z: 0.000000
+    roll: 0.000000
+    pitch: 0.000000
+    yaw: 0.000000
 
-  traffic_light_camera/camera_link:
-    x: 1.10946
-    y: -0.05
-    z: 0.964
-    roll: 0.0
-    pitch: 1.4835
-    yaw: 0.0
-
-  remote_drive_camera/camera_link:
-    x: 1.10946
-    y: 0.0
-    z: 0.964
-    roll: 0.0
-    pitch: 1.8326
-    yaw: 0.0
 
   lslidar_top_base_link:
-    x: 0.48146
-    y: 0.0
-    z: 1.324
-    roll: 0.0
-    pitch: 0.0
-    yaw: 1.5708
-
-  lslidar_left_base_link:
-    x: 1.17146
-    y: 0.486
-    z: 0.434
-    roll: 0.0
-    pitch: 0.0
-    yaw: 2.5307
+    x: 0.000000
+    y: 0.000000
+    z: 0.000000
+    roll: 0.000000
+    pitch: 0.000000
+    yaw: 0.000000
 
   lslidar_right_base_link:
-    x: 1.17446
-    y: -0.486
-    z: 0.434
-    roll: 0.0
-    pitch: 0.0
-    yaw: 0.6109
+    x: 0.000000
+    y: 0.000000
+    z: 0.000000
+    roll: 0.000000
+    pitch: 0.000000
+    yaw: 0.000000
 
-  utra_wave_sensor_base_link:
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    roll: 0.0
-    pitch: 0.0
-    yaw: 0.0
+  lslidar_left_base_link:
+    x: 0.000000
+    y: 0.000000
+    z: 0.000000
+    roll: 0.000000
+    pitch: 0.000000
+    yaw: 0.000000
 
+  remote_control_camer/camera_link:
+    x: 0.000000
+    y: 0.000000
+    z: 0.000000
+    roll: 0.000000
+    pitch: 0.000000
+    yaw: 0.000000
+
+  traffic_light_camer/camera_link:
+    x: 0.000000
+    y: 0.000000
+    z: 0.000000
+    roll: 0.000000
+    pitch: 0.000000
+    yaw: 0.000000
